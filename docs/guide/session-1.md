@@ -128,7 +128,7 @@
 | name | `"tumble-dashboard"` |
 | version | `"1.0.0"` |
 | private | `true` |
-| scripts | `"start": "node --watch --watch-preserve-output scripts/serve.mjs"` 하나. `--watch`는 `serve.mjs`가 바뀌면 같은 창에서 서버를 다시 켜는 Node 기본 기능이고, `--watch-preserve-output`은 다시 켤 때 서버 창의 앞 줄을 지우지 않게 합니다 |
+| scripts | `"start": "node --watch scripts/serve.mjs"` 하나. `--watch`는 `serve.mjs`가 바뀌면 같은 창에서 서버를 다시 켜는 Node 기본 기능입니다. 다시 켤 때 서버 창의 앞 줄은 지워지고 새로 찍힙니다 |
 
 **첫 화면 `index.html`.**
 
@@ -251,7 +251,7 @@
 
 ### 약속
 
-**켜기 전 확인.** 먼저 `package.json`의 `start`가 "프로젝트 파일"의 값(`node --watch --watch-preserve-output scripts/serve.mjs`)인지 봅니다. 다르면 그 값으로 고칩니다. 그다음 4173번 포트를 듣는 프로세스가 있는지 봅니다.
+**켜기 전 확인.** 먼저 `package.json`의 `start`가 "프로젝트 파일"의 값(`node --watch scripts/serve.mjs`)인지 봅니다. 다르면 그 값으로 고칩니다. 그다음 4173번 포트를 듣는 프로세스가 있는지 봅니다.
 
 ```powershell
 Get-NetTCPConnection -LocalPort 4173 -State Listen -ErrorAction SilentlyContinue | Select-Object -ExpandProperty OwningProcess -Unique
