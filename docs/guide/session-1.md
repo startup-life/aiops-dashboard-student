@@ -128,7 +128,7 @@
 | name | `"tumble-dashboard"` |
 | version | `"1.0.0"` |
 | private | `true` |
-| scripts | `"start": "node scripts/serve.mjs"` 하나 |
+| scripts | `"start": "node --watch --watch-preserve-output scripts/serve.mjs"` 하나. `--watch`는 `serve.mjs`가 바뀌면 같은 창에서 서버를 다시 켜는 Node 기본 기능이고, `--watch-preserve-output`은 다시 켤 때 서버 창의 앞 줄을 지우지 않게 합니다 |
 
 **첫 화면 `index.html`.**
 
@@ -245,66 +245,55 @@
 
 쓰는 단계: 1-4
 
-화면 서버는 프롬프트나 사용자가 켜 달라고 할 때 AI 도구가 학생이 볼 수 있는 전용 PowerShell 창에서 켭니다. 화면 서버(4173)와 내 서버(3000)는 각각 창 하나만 둡니다. 창 제목에 서버 종류와 포트를 표시합니다. 회차가 바뀌거나 "켜 주세요"라는 요청을 다시 받아도 이미 켜진 서버와 창을 그대로 씁니다. HTML·CSS·화면 JavaScript만 고쳤으면 서버를 다시 켜지 않고 브라우저만 새로고침합니다.
+화면 서버는 프롬프트나 사용자가 켜 달라고 할 때 AI 도구가 켭니다. AI 도구의 터미널에서 켜지 않고, 새 PowerShell 창을 열어 그 창에서 켭니다. 이 새 창이 서버 창입니다. 서버가 AI 도구의 대화와 떨어진 창에서 돌고, 사용자는 이 창에서 서버가 출력한 줄과 빨간 오류 줄을 봅니다. 2회차부터 회차를 시작할 때 사용자가 "화면 서버를 켜 주세요."라고 보내면 같은 순서로 켭니다.
+
+서버는 `node --watch`로 켭니다("프로젝트 파일"의 `package.json`). 서버 파일이 바뀌면 서버가 같은 창에서 알아서 다시 켜지므로, AI 도구는 서버를 다시 켜려고 서버를 끄거나 새 창을 열지 않습니다. 서버마다 창은 하나입니다. HTML·CSS·화면 JavaScript만 고쳤으면 브라우저만 새로고침합니다. 4회차의 내 서버(3000)도 같은 방식입니다.
 
 ### 약속
 
-**켜기 전 확인.** 4173번 포트를 듣는 프로세스가 있는지 봅니다.
+**켜기 전 확인.** 먼저 `package.json`의 `start`가 "프로젝트 파일"의 값(`node --watch --watch-preserve-output scripts/serve.mjs`)인지 봅니다. 다르면 그 값으로 고칩니다. 그다음 4173번 포트를 듣는 프로세스가 있는지 봅니다.
 
 ```powershell
 Get-NetTCPConnection -LocalPort 4173 -State Listen -ErrorAction SilentlyContinue | Select-Object -ExpandProperty OwningProcess -Unique
 ```
 
-- 이미 켜져 있으면 아래 "창 기록 확인"으로 이 프로젝트가 켠 서버인지 확인합니다. 맞으면 새 창을 열지 않고 "이미 켜져 있습니다"라고 알립니다.
-- 명령 줄에 `scripts/serve.mjs`가 있다는 이유만으로 내 서버라고 판단하지 않습니다. 같은 파일 이름을 쓰는 다른 프로젝트일 수 있습니다.
-- 기록이 없거나 확인되지 않는 프로세스가 포트를 쓰면 끄지 않고 사용자에게 알립니다. 서버가 없더라도 기록된 예전 창이 남아 있으면 "다시 켤 때"에 따라 정리한 뒤 켭니다.
-
-**새 창에서 켜기.** 아래 명령은 AI 도구의 터미널에서 실행합니다. 앱 폴더는 현재 프로젝트의 절대 경로로 바꿉니다. 학생이 출력과 오류를 볼 전용 창이므로 숨기지 않습니다. `npm.cmd start`와 앱 코드는 그대로 쓰며, 창 관리용 프로그램이나 패키지를 추가하지 않습니다.
+- 프로세스 번호가 나오면 아래 명령으로 그 번호의 명령 줄을 봅니다. 명령 줄에 `scripts/serve.mjs`가 있으면 화면 서버가 이미 켜져 있는 것입니다. 새로 켜지 않고 "이미 켜져 있습니다"라고 알립니다. 이때 "감시 확인"에 아무것도 나오지 않으면 `--watch` 없이 켠 예전 방식 서버이니 "다시 켤 때"의 마지막 항목대로 합니다.
+- 명령 줄에 `scripts/serve.mjs`가 없으면 다른 프로그램이 4173번 포트를 쓰고 있는 것입니다. 그 프로그램을 끄지 않고 서버도 켜지 않으며, 다른 프로그램이 4173번 포트를 쓰고 있으니 강사에게 알려 달라고 사용자에게 말합니다.
+- 아무것도 나오지 않으면 "감시 확인"을 합니다. 줄이 나오면 서버 창이 열려 있고, 서버가 오류로 멈춘 채 파일이 바뀌기를 기다리는 중입니다. 새 창을 열지 않습니다. 서버 창의 빨간 줄을 복사해 붙여 넣어 달라고 하고, 고친 뒤(고칠 것이 없으면 바로) "다시 켤 때"대로 같은 창에서 다시 켭니다. 감시 확인에도 아무것도 나오지 않을 때만 아래 "새 창에서 켜기"로 켭니다.
 
 ```powershell
-$serverRoot = (Resolve-Path -LiteralPath 'C:\ai-class\tumble-dashboard').Path
-$serverWorkDir = $serverRoot
-$serverPort = 4173
-$serverTitle = '텀블공장 화면 서버 · 4173'
-$serverStateDir = Join-Path $serverRoot '.runtime'
-New-Item -ItemType Directory -Path $serverStateDir -Force | Out-Null
-$serverRecordPath = Join-Path $serverStateDir ("server-window-{0}.json" -f $serverPort)
-$serverCommand = '$Host.UI.RawUI.WindowTitle = ' + "'" + $serverTitle.Replace("'", "''") + "'; Set-Location -LiteralPath '" + $serverWorkDir.Replace("'", "''") + "'; npm.cmd start"
-$serverEncoded = [Convert]::ToBase64String([Text.Encoding]::Unicode.GetBytes($serverCommand))
-$serverWindow = Start-Process powershell.exe -WindowStyle Normal -ArgumentList '-NoProfile','-NoExit','-EncodedCommand',$serverEncoded -PassThru
-$serverInfo = Get-CimInstance Win32_Process -Filter ("ProcessId={0}" -f $serverWindow.Id)
-[ordered]@{
-  root = $serverRoot
-  workDir = $serverWorkDir
-  port = $serverPort
-  shellPid = $serverWindow.Id
-  shellCreated = $serverInfo.CreationDate.ToUniversalTime().ToString('o')
-  shellCommandLine = $serverInfo.CommandLine
-} | ConvertTo-Json | Set-Content -LiteralPath $serverRecordPath -Encoding UTF8
+Get-CimInstance Win32_Process -Filter "ProcessId=(프로세스 번호)" | Select-Object -ExpandProperty CommandLine
 ```
 
-- 창 기록은 이미 Git 제외 대상인 `.runtime`에 둡니다. 대화가 바뀌어도 이 기록을 읽어 같은 창을 식별합니다. `AGENTS.md`, npm 명령, 앱 파일을 학생 프로젝트에서 임의로 고치지 않습니다.
-- npm이 실행 중에는 창 제목을 `npm start`로 바꿀 수 있습니다. 제목이 달라져도 창을 더 열지 말고 아래 기록과 프로세스 관계로 확인합니다.
-- 몇 초 뒤 포트가 열렸는지와 서버가 기록된 창의 자손 프로세스인지 확인합니다. 화면 서버 주소가 나오면 ego 브라우저에서 http://127.0.0.1:4173 을 열어 보라고 알립니다. 사용자가 확인을 부탁하면 AI 도구가 ego 브라우저로 확인해도 됩니다.
-- 포트가 열리지 않으면 새 창을 더 열지 않습니다. 오류가 난 창을 남겨 두고, 사용자가 오류 줄을 복사해 수정 요청을 보낼 수 있게 안내합니다. `-NoExit`은 이때 오류 창을 유지하기 위한 것입니다.
+**감시 확인.** 서버 창에서 `--watch`로 도는 Node 프로세스가 있는지 봅니다. 포트를 듣는 것은 이 프로세스가 띄운 서버이고, 이 프로세스는 서버가 오류로 멈춰도 창과 함께 남아 있습니다.
 
-**창 기록 확인.** `.runtime/server-window-4173.json`을 읽어 다음 조건을 모두 확인합니다. 내 서버는 포트와 기록 파일 이름을 3000으로 바꿉니다.
+```powershell
+Get-CimInstance Win32_Process -Filter "Name='node.exe'" | Where-Object { $_.CommandLine -like '* --watch *scripts/serve.mjs*' } | Select-Object ProcessId, CommandLine
+```
 
-1. 기록의 `root`, `workDir`, `port`가 이번 프로젝트와 대상 서버에 맞습니다.
-2. `shellPid`로 조회한 프로세스가 `powershell.exe`이고, 생성 시각과 전체 명령 줄이 기록의 `shellCreated`, `shellCommandLine`과 같습니다. 생성 시각은 `[datetime]`으로 변환하여 UTC 시각끼리 비교합니다. PowerShell 버전에 따라 JSON 날짜를 문자열 또는 날짜 객체로 읽으므로 문자열 그대로 비교하지 않습니다. PID가 같아도 생성 시각이 다르면 다른 창입니다.
-3. 포트를 듣는 서버의 `ParentProcessId`를 거슬러 올라가면 기록된 PowerShell에 도달하며, 서버 명령 줄이 화면 서버의 `scripts/serve.mjs`(내 서버는 `dist/main.js`)를 실행합니다. 중간에 npm이나 cmd 프로세스가 있을 수 있습니다.
+**새 창에서 켜기.** 아래 명령으로 새 PowerShell 창을 열고 그 창에서 화면 서버를 켭니다. 앱 폴더가 `C:\ai-class\tumble-dashboard`가 아니면 그 경로로 바꿉니다. 서버가 꺼진 예전 서버 창이 남아 있으면 닫아도 된다고 사용자에게 알립니다.
 
-프로세스 정보는 `Get-CimInstance Win32_Process`로 확인합니다. 기록이 없거나 조건이 다르면 다른 창으로 간주하여 닫지 않습니다. 예전 방식으로 켠 서버라 기록이 없으면 그 서버 창을 한 번 직접 닫아 달라고 안내하고, 종료를 확인한 뒤 이 방식으로 다시 켭니다. 창 제목만으로 닫거나 모든 PowerShell·node 프로세스를 한꺼번에 종료하지 않습니다.
+```powershell
+Start-Process powershell -ArgumentList '-NoExit','-Command','cd C:\ai-class\tumble-dashboard; npm.cmd start'
+```
 
-**다시 켤 때.** 아래 순서를 지킵니다. 새 창을 먼저 열어 둔 뒤 옛 창을 정리하지 않습니다.
+- 몇 초 뒤 "켜기 전 확인"의 포트 명령으로 4173번 포트를 듣는 프로세스가 생겼는지 봅니다.
+- 생겼으면 새 PowerShell 창에서 화면 서버를 켰으니 ego 브라우저에서 http://127.0.0.1:4173 을 열어 보라고 알립니다. 사용자가 확인을 부탁할 때만 AI 도구가 ego 브라우저로 화면을 엽니다.
+- 생기지 않았으면 새 창을 더 열지 않고, 서버 창에 나온 빨간 줄을 복사해 붙여 넣어 달라고 사용자에게 말합니다. 사용자가 그 줄을 붙여 넣고 고쳐 달라고 하면 고친 뒤 "다시 켤 때"대로 같은 창에서 다시 켭니다.
 
-1. 빌드가 필요한 변경은 먼저 빌드합니다. 빌드가 실패하면 기존 서버와 창은 유지하고, 새 창을 열지 않은 채 빌드 오류를 알려 줍니다.
-2. "창 기록 확인"으로 기존 창과 서버를 확인합니다. 종료 직전에도 PID와 생성 시각을 다시 확인합니다.
-3. 확인한 서버 PID만 `Stop-Process -Id (서버 PID)`로 종료하고, 포트가 해제되고 해당 프로세스가 끝났는지 확인합니다. 그 자손 관계에서 확인한 npm·cmd 실행이 끝날 때까지 기다립니다. 종료되지 않으면 새 창을 열지 말고 원인을 확인합니다.
-4. 기록된 전용 PowerShell의 PID·생성 시각·명령 줄을 다시 확인한 뒤 `Stop-Process -Id (전용 PowerShell PID)`로 그 창을 종료합니다. 창만 남고 서버가 이미 끝난 경우에도 같은 확인 후 그 창만 종료합니다. 셸에 다른 명령이 실행 중이거나 소유 관계가 불확실하면 닫지 말고 사용자에게 알립니다.
-5. 기존 창의 프로세스가 끝난 것을 확인한 다음 "새 창에서 켜기"를 한 번 실행하여 기록을 갱신합니다. 학생에게 예전 창을 매번 닫으라고 시키지 않습니다.
+**다시 켤 때.** 서버를 끄거나 새 창을 열지 않습니다. 프롬프트나 사용자가 "끄고 새 창에서 켜 달라"고 해도 이 순서로 합니다.
 
-**끄기.** 사용자는 서버 창을 닫거나 그 창에서 Ctrl+C를 눌러 서버를 끌 수 있습니다. "일괄 작업을 끝내시겠습니까 (Y/N)?"가 나오면 `Y`를 칩니다. Ctrl+C로 서버만 끈 창은 다음 실행 때 AI 도구가 위 순서로 정리합니다. 종료된 PID의 기록을 새 프로세스에 적용하지 않습니다.
+- `scripts/serve.mjs`를 고쳤으면 서버가 같은 창에서 알아서 다시 켜집니다. 서버 창에 `Restarting`으로 시작하는 줄과 서버 주소 줄이 다시 나옵니다.
+- 파일을 고치지 않았거나 `serve.mjs` 밖의 파일을 고쳐서 다시 켜야 하면(사용자가 "화면 서버를 다시 켜 주세요."라고 할 때 등) 시작 파일의 수정 시각만 바꿉니다. 서버가 파일이 바뀐 것으로 보고 같은 창에서 다시 켜집니다. 앱 폴더가 다르면 경로를 바꿉니다.
+
+```powershell
+(Get-Item -LiteralPath 'C:\ai-class\tumble-dashboard\scripts\serve.mjs').LastWriteTime = Get-Date
+```
+
+- 다시 켜기 전에 4173번 포트를 듣는 프로세스 번호를 봐 둡니다. 다시 켠 뒤 몇 초 기다렸다가 그 번호가 바뀌었는지 봅니다. 바뀌었으면 다시 켜진 것입니다. 포트가 비어 있으면 서버 창의 빨간 줄을 복사해 붙여 넣어 달라고 합니다.
+- 포트를 듣는 서버는 있는데 "감시 확인"에 아무것도 나오지 않으면 `--watch` 없이 켠 예전 방식 서버라 알아서 다시 켜지지 않습니다. 이때만 "켜기 전 확인"대로 `package.json`을 고치고, 사용자에게 지금 서버 창을 한 번 닫아 달라고 한 뒤 포트가 빈 것을 확인하고 "새 창에서 켜기"로 켭니다.
+
+**끄기.** 사용자가 서버 창을 닫거나 그 창에서 Ctrl+C를 누르면 꺼집니다. "일괄 작업을 끝내시겠습니까 (Y/N)?"가 나오면 `Y`를 칩니다.
 
 
 ## 머리 부분 오른쪽 자리
