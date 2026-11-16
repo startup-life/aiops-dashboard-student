@@ -55,7 +55,7 @@
 | private | true |
 | description | "학생용 텀블러 생산·출고 교육 API" |
 | engines | node ">=22" |
-| scripts | build "tsc -p tsconfig.json", start "node --watch --watch-preserve-output dist/main.js", start:local "node --watch --watch-preserve-output --env-file=.env dist/main.js". `--watch`는 빌드로 `dist` 폴더의 파일이 바뀌면 같은 창에서 서버를 다시 켜는 Node 기본 기능이고, `--watch-preserve-output`은 다시 켤 때 서버 창의 앞 줄을 지우지 않게 합니다 |
+| scripts | build "tsc -p tsconfig.json", start "node --watch dist/main.js", start:local "node --watch --env-file=.env dist/main.js". `--watch`는 빌드로 `dist` 폴더의 파일이 바뀌면 같은 창에서 서버를 다시 켜는 Node 기본 기능입니다. 다시 켤 때 서버 창의 앞 줄은 지워지고 새로 찍힙니다 |
 
 패키지는 이것만, 버전 앞에 `^`·`~` 없이 씁니다.
 
