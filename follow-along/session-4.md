@@ -1,5 +1,15 @@
 # 4회차 목표: 내 NestJS 서버
 
+## 4회차 완성 화면
+
+![내 서버의 생산·출고 실적과 현장 사진을 표시한 오늘 운영 화면](images/session-4/01-4-12-today.png)
+
+내 서버의 생산·출고 실적과 현장 사진을 표시한 오늘 운영 화면
+
+![내 서버 기록으로 채운 생산 기록 화면](images/session-4/02-4-final-records.png)
+
+내 서버 기록으로 채운 생산 기록 화면
+
 내가 만든 NestJS 서버가 켜지고, 화면이 그 서버의 값으로 나옵니다.
 서버는 대시보드 폴더 안 `backend` 폴더에 있고 `http://127.0.0.1:3000`에서 켜집니다. 처음 켤 때 오늘 기록(생산 100개, 출고 75개)을 만들어 `backend\var\state.json`에 저장합니다.
 화면 코드는 그대로 두고 연결 주소만 `http://127.0.0.1:3000`으로 바꿉니다. 그러면 강사 API를 쓰던 1단계와 같은 화면이 내 서버 값으로 나오고 "조회 정상"으로 표시됩니다.
@@ -44,6 +54,10 @@
 - 목표: 4회차의 자세한 약속(주소, 응답 모양, 오류 문장)은 4회차 보충 문서와 완료 브랜치 `milestone-4` 코드에 있으므로, 이 번호를 다른 번호보다 먼저 보냅니다.
 - 완료 기준: 파일 탐색기나 AI 도구의 파일 목록에서 `docs\guide`에 `session-4.md`가 생기고, 답 맨 앞이 "읽은 문서: session-1 ~ session-4"입니다.
 
+![4-1 session-4.md까지 들어온 보충 문서 폴더](images/session-4/03-4-1-guide.jpg)
+
+4-1 `session-4.md`까지 들어온 보충 문서 폴더
+
 ## 4-2. 내 서버 폴더와 설정 파일
 
 ```text
@@ -69,6 +83,10 @@
   - `backend\node_modules`와 `backend\package-lock.json`이 생깁니다. 취약점(vulnerabilities) 안내가 나와도 그대로 둡니다(`npm audit fix`를 실행하지 않습니다).
   - AI 도구 답의 `npm.cmd ls --depth=0` 결과에 `@nestjs/common@11.2.7`, `@nestjs/core@11.2.7`, `@nestjs/platform-express@11.2.7`, `@types/node@24.4.0`, `reflect-metadata@0.2.2`, `rxjs@7.8.2`, `typescript@5.9.3` 일곱 줄이 나옵니다.
 
+![4-3 설치 뒤 생성된 node_modules 폴더와 package-lock.json](images/session-4/04-4-3-installed.jpg)
+
+4-3 설치 뒤 생성된 node_modules 폴더와 package-lock.json
+
 ## 4-4. 서버 시작 파일과 상태 확인 주소
 
 ```text
@@ -80,6 +98,10 @@
 - 하는 일: `backend\src`에 파일 세 개가 생깁니다. 서버를 켜는 시작 파일(`main.ts`), 서버의 부품을 묶는 앱 모듈, 상태 확인 주소(`/api/v1/health`)에 답하는 파일입니다.
 - 목표: 4-5에서 서버가 켜져 응답하는지 먼저 보려고 주소는 상태 확인 하나만 만듭니다. 나머지 주소 셋(기록 목록, 오늘 운영 자료, 현장 사진)은 4-7부터 하나씩 더합니다.
 - 완료 기준: `backend\src` 안에 파일이 세 개 있습니다.
+
+![4-4 서버 시작 파일, 모듈, 상태 확인 주소 파일](images/session-4/05-4-4-source.jpg)
+
+4-4 서버 시작 파일, 모듈, 상태 확인 주소 파일
 
 ## 4-5. 빌드하고 처음 켜기
 
@@ -98,6 +120,10 @@
 - 막히면: 서버 창에 `EADDRINUSE`가 나오면 3000번 포트를 다른 프로그램이 쓰고 있습니다. 그 줄을 복사해 AI 도구에 붙여 넣고, AI 도구가 다른 프로그램이 쓰고 있다고 답하면 그 프로그램을 닫거나 강사에게 알립니다.
 - 알아 두기: `Access-Control-Allow-Origin: *`는 4173에서 열린 화면이 3000의 내 서버 자료를 읽어도 된다는 허용 표시입니다. 이 줄이 없으면 4-12에서 Console 탭에 CORS 오류가 나옵니다. `Cache-Control: no-store`는 브라우저가 응답을 저장해 두지 않고 늘 새로 받게 하는 표시입니다.
 
+![4-5 Ego 브라우저에서 확인한 서버 상태 응답](images/session-4/06-4-5-health.png)
+
+4-5 Ego 브라우저에서 확인한 서버 상태 응답
+
 ## 4-6. 시드 기록과 상태 파일
 
 ```text
@@ -113,6 +139,10 @@
   - AI 도구에 "내 서버를 다시 켜 주세요."라고 보냅니다. AI 도구가 서버를 같은 서버 창에서 다시 켠 뒤 내가 `state.json`을 다시 열면 `sessionId`가 그대로입니다. 이미 있는 파일을 다시 쓴 것입니다.
   - 시각은 UTC 글자라 한국 시간에서 9시간을 뺀 값입니다. 건수는 켠 시각에 따라 다릅니다.
 
+![4-6 생성된 생산·출고 시드 기록](images/session-4/07-4-6-state-crop.jpg)
+
+4-6 생성된 생산·출고 시드 기록
+
 ## 4-7. 기록 목록 주소
 
 ```text
@@ -126,6 +156,10 @@
 - 완료 기준:
   - 다시 켤 때의 줄에 `Mapped {/api/v1/records, GET} route`가 더해졌습니다. `http://127.0.0.1:3000/api/v1/records?kind=production`을 열면 `{"sessionId":"lesson-…","viewTime":"…","records":[…]}`이고, 기록이 발생 시각 순서이며 모두 `"status":"completed"`입니다.
   - `?kind=abc`는 `{"message":"생산 또는 출고 기록을 선택해 주세요.","error":"Bad Request","statusCode":400}`이고, `?kind=production&at=2099-01-01T00:00:00Z`는 `"오늘의 현재 이전 시각을 선택해 주세요."`가 들어간 400입니다.
+
+![4-7 생산 기록 목록 응답](images/session-4/08-4-7-records.png)
+
+4-7 생산 기록 목록 응답
 
 ## 4-8. 오늘 운영 자료 주소
 
@@ -141,6 +175,10 @@
   - 다시 켤 때의 줄에 `Mapped {/api/v1/snapshot, GET} route`가 더해졌습니다. `http://127.0.0.1:3000/api/v1/snapshot`을 열면 `schemaVersion`(1), `scenarioId`("normal"), `trainingOnly`(true), `sites`, `services`, `incidents`, `viewTime`, `mode`("current"), `sessionId`가 보입니다.
   - `sites`에 `"텀블공장"`(목표 `120`)과 `"물류창고"`(목표 `100`)가 있고, 수량과 시각은 아직 비어 있습니다(`null`).
 
+![4-8 현장 이름과 목표가 들어간 오늘 운영 자료](images/session-4/09-4-8-snapshot.png)
+
+4-8 현장 이름과 목표가 들어간 오늘 운영 자료
+
 ## 4-9. 현장 값 채우기
 
 ```text
@@ -154,6 +192,10 @@
 - 완료 기준:
   - 다시 켠 뒤 `http://127.0.0.1:3000/api/v1/snapshot`을 열면 `sites.factory.completed`가 `100`, `sites.warehouse.completed`가 `75`입니다. `target`은 `120`과 `100`이고, `image.url`은 `http://127.0.0.1:3000/api/v1/images/factory`, `…/warehouse`입니다.
   - 4-6에서 처음 켠 지 28분이 안 됐으면 두 현장 모두 `"status":"normal"`, note `"기록이 반영되고 있습니다."`, `incidents`는 `[]`입니다. 28분이 넘었으면 두 현장 모두 `"warning"`, note가 `"텀블공장 기록이 30분 넘게 들어오지 않았습니다."`·`"물류창고 기록이 30분 넘게 들어오지 않았습니다."`이고 `incidents`가 2건입니다. 이 서버는 켠 뒤로 기록이 늘지 않으므로 이렇게 되는 것이 맞습니다.
+
+![4-9 생산 100개와 출고 75개가 채워진 응답](images/session-4/10-4-9-site-values.png)
+
+4-9 생산 100개와 출고 75개가 채워진 응답
 
 ## 4-10. 현장 사진 주소
 
@@ -169,6 +211,10 @@
   - `backend\assets` 안에 `factory.png`, `warehouse.png`가 있고, `public\assets\approved`의 사진도 그대로 남아 있습니다.
   - 다시 켤 때의 줄에 `Mapped {/api/v1/images/:id, GET} route`가 더해졌습니다. `http://127.0.0.1:3000/api/v1/images/factory`를 열면 컨베이어 위 상자 그림이, `…/images/warehouse`를 열면 물류창고 그림이 보입니다.
 
+![4-10 내 서버의 공장 사진 주소](images/session-4/11-4-10-factory.png)
+
+4-10 내 서버의 공장 사진 주소
+
 ## 4-11. 화면을 내 서버에 연결
 
 ```text
@@ -180,6 +226,10 @@
 - 하는 일: `public\config.js`의 `apiBaseUrl` 한 값이 `"http://127.0.0.1:3000"`으로 바뀝니다.
 - 목표: 3회차에 연결 설정을 파일 하나로 나눠 두었으므로 화면 코드를 고치지 않고 이 값만 바꿔 내 서버로 옮깁니다.
 - 완료 기준: `public\config.js`가 여전히 네 줄이고 `apiBaseUrl`만 `"http://127.0.0.1:3000"`으로 바뀌었습니다(끝에 `/` 없음). 1단계로 되돌릴 때는 `API_CONTRACT.md` 9절 표의 1단계 값을 씁니다.
+
+![4-11 내 서버 주소로 바뀐 화면 연결 설정](images/session-4/12-4-11-config.png)
+
+4-11 내 서버 주소로 바뀐 화면 연결 설정
 
 ## 4-12. 내 서버 값으로 화면 보기
 
@@ -197,6 +247,10 @@
   - F12, Network 탭에서 `snapshot` 요청이 10초마다 `http://127.0.0.1:3000/api/v1/snapshot`으로 나가고 상태가 200입니다. 사진 요청은 `http://127.0.0.1:3000/api/v1/images/factory`, `…/warehouse`입니다. Console 탭에 CORS 오류가 없습니다.
   - 생산 기록 화면과 출고 기록 화면의 줄 수가 `state.json`의 생산·출고 건수와 같습니다. 화면 맨 위의 기준 시각에서 오늘의 지난 정시를 고르면 Network 탭에 `?at=`이 붙은 요청이 보이고, 그때까지의 수량으로 바뀝니다.
 - 막히면: 4-12로 다시 켠 지 28분이 넘으면 두 현장이 "확인 필요"이고 "기록이 30분 넘게 들어오지 않았습니다." 안내가 보입니다. 4-12 프롬프트를 다시 보내 상태 파일을 새로 만들면 정상 표시로 돌아옵니다.
+
+![4-12 내 서버에 연결한 오늘 운영 화면](images/session-4/13-4-12-today.png)
+
+4-12 내 서버에 연결한 오늘 운영 화면
 
 ## 4회차 끝 확인
 
