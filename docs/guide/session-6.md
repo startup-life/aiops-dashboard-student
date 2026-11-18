@@ -57,7 +57,7 @@
 
 쓰는 단계: 6-4, 6-10, 6-12, 6-13, 6-14
 
-사용자나 AI 도구는 이 이름으로 편집기의 함수 목록과 트리거 목록에서 함수를 찾습니다. 편집기에서 함수 실행, 시트 고치기, 트리거 설치·확인·삭제, 스크립트 속성 넣기, Discord 웹훅 만들기는 사용자가 부탁하면 AI 도구가 ego 브라우저로 합니다.
+사용자나 AI 도구는 이 이름으로 편집기의 함수 목록과 트리거 목록에서 함수를 찾습니다. 편집기에서 함수 실행, 시트 고치기, 트리거 설치·확인·삭제, 스크립트 속성 넣기, Discord 웹훅 만들기는 사용자가 부탁하면 AI 도구가 ego 브라우저로 합니다. 웹훅 주소는 Discord에서 "웹후크 URL 복사"를 누른 뒤 PowerShell의 `Get-Clipboard`로 읽어 스크립트 속성에 넣습니다.
 
 ### 약속
 
@@ -81,7 +81,7 @@
 
 쓰는 단계: 6-3
 
-프롬프트를 따라 만들 때는 웹훅 주소와 보내다가 난 오류의 내용을 로그와 시트에 남기지 않습니다. 사용자가 원인을 찾으려고 로그를 찍어 달라고 하면 찍습니다. 상세 칸에는 '보낸 결과 남기기' 표의 글만 씁니다.
+프롬프트를 따라 만들 때는 웹훅 주소와 보내다가 난 오류의 내용을 로그와 시트에 남기지 않습니다. 사용자가 로그를 찍어 달라고 하면 찍습니다. 상세 칸에는 '보낸 결과 남기기' 표의 글만 씁니다.
 
 ### 약속
 
@@ -241,5 +241,6 @@ UrlFetchApp.fetch(주소 + "?wait=true", { method: "post", contentType: "applica
 - 실행 함수가 `onEditInstalled`나 `checkRecordDelays`인 트리거를 모두 지웁니다.
 - 그 뒤 ScriptApp.newTrigger("onEditInstalled").forSpreadsheet(시트 ID).onEdit().create()와 `ScriptApp.newTrigger("checkRecordDelays").timeBased().everyMinutes(1).create()`를 만듭니다.
 - 여러 번 실행해도 두 개만 남습니다.
+- 시트 수정 트리거는 설치할 때의 시트에만 반응합니다. 새 실습 시트를 만든 뒤에는 `installTrainingTriggers`를 다시 실행합니다.
 
 [session-6 문서 끝]

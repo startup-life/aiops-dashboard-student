@@ -351,7 +351,7 @@ function apiUrl(base, path, params = "") {
   return address + path + (query ? "?" + query : "");
 }
 // 실패는 시간 초과·연결 실패·HTTP 오류·JSON 아님 네 갈래로 나눠 알립니다.
-const RETRY_HINT = "잠시 후 다시 조회하고, 계속되면 서버를 실행한 창의 기록(로그)을 확인하거나 강사에게 알려 주세요.";
+const RETRY_HINT = "잠시 후 다시 조회하고, 계속되면 이 문구를 AI 도구에 붙여 넣고 원인을 찾아 고쳐 달라고 해 주세요.";
 const CONNECTION_MESSAGE = "API 서버에 연결하지 못했습니다. 연결 주소가 맞는지, 직접 띄운 서버라면 켜져 있는지 확인해 주세요. GAS 웹 앱이라면 편집기에서 함수를 한 번 실행해 권한을 승인했는지도 확인해 주세요.";
 const NOT_JSON_MESSAGE = "서버 응답이 JSON 형식이 아닙니다. 연결 주소가 API 서버 주소인지 확인해 주세요.";
 // 5000이면 5, 100이면 0.1, 15000이면 15초입니다(소수 첫째 자리까지 반올림).
