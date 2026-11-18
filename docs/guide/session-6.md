@@ -6,8 +6,8 @@
 
 - 백틱 안의 글은 이름이나 값입니다. 글자 그대로 씁니다.
 - 큰따옴표 안의 글은 화면에 나오는 글자이거나 코드에 들어가는 값입니다. 한 글자도 바꾸지 않습니다. 단, 프롬프트 마지막 참고 줄의 큰따옴표 안은 이 문서의 절 제목입니다.
-- "쓰는 단계"는 그 내용을 만드는 프롬프트 번호입니다. 프롬프트 맨 앞의 `[2-14]` 같은 표시가 이번 단계입니다. 그 번호가 "쓰는 단계"나 줄 앞에 적힌 내용만 만들고, 다른 번호의 내용은 그 프롬프트를 받기 전에 만들지 않습니다.
-- "만들지 않는 것" 절에 적힌 기능은 완료 브랜치 코드에 있어도 만들지 않습니다.
+- "쓰는 단계"는 그 내용을 만드는 프롬프트 번호입니다. 프롬프트 맨 앞의 `[2-14]` 같은 표시가 이번 단계입니다. 그 번호가 "쓰는 단계"나 줄 앞에 적힌 내용을 만들고, 다른 번호의 내용은 그 프롬프트가 올 때 만듭니다. 사용자가 다른 번호의 내용도 함께 만들어 달라고 하면(밀린 단계를 따라잡을 때 등) 그대로 만듭니다.
+- "만들지 않는 것" 절에 적힌 기능은 완료 브랜치 코드에 있어도 기본으로는 만들지 않습니다. 사용자가 만들어 달라고 하면 완료 브랜치 코드를 보고 만듭니다.
 - 창고 쪽 이름은 공장 쪽 이름의 `factory`를 `warehouse`로 바꾼 같은 이름입니다.
 
 ## 이 회차에서 만드는 것
@@ -20,7 +20,7 @@
 
 ## 앞 회차에서 바뀌는 것
 
-- 5회차 'Google 명령을 실행할 때'에는 "gas:push 뒤 gas:redeploy"라고 적혀 있습니다. 이번 회차는 웹 앱 입구를 바꾸지 않아서 AI 도구가 프롬프트를 받아 gas:push만 하고 gas:redeploy는 하지 않습니다. 편집기 실행과 트리거는 gas:push로 올린 코드로 바로 돌아갑니다.
+- 5회차 'Google 명령을 실행할 때'에는 "gas:push 뒤 gas:redeploy"라고 적혀 있습니다. 이번 회차는 웹 앱 입구를 바꾸지 않아서 기본으로 gas:push만 하고 gas:redeploy는 하지 않습니다. 사용자가 부탁하면 합니다. 편집기 실행과 트리거는 gas:push로 올린 코드로 바로 돌아갑니다.
 - 5회차에 다른 곳에서 부르지 않던 `settings_()`를 이번 회차 `rememberSettings_()`가 부릅니다.
 - 5회차에 만든 도구(`toRow_`, `fromCell_`, `settings_()`, `meta_()`, `readData_()`, `alerts_()`, `alertMessage_`, `TumbleCore`)는 새로 만들지 않고 그대로 부릅니다.
 
@@ -49,18 +49,18 @@
 ### 약속
 
 - 이번 회차 함수는 모두 `gas/Code.gs` 끝에 더합니다.
-- 함수를 만드는 번호에서는 Google에 올리지 않습니다. `gas:push`는 올리라는 프롬프트(6-6, 6-11, 6-15)를 받았을 때만 한 번 실행하고, 실패하면 다시 실행하지 않고 결과를 그대로 알립니다.
-- 웹 앱 입구(`doGet`)는 바꾸지 않으므로 `gas:push`만 하고 `gas:redeploy`와 `gas:deploy`는 하지 않습니다.
+- 함수를 만드는 번호에서는 기본으로 Google에 올리지 않습니다. `gas:push`는 올리라는 프롬프트(6-6, 6-11, 6-15)를 받거나 사용자가 부탁하면 한 번 실행합니다. 실패하면 저절로 다시 실행하지 않고 오류 줄을 알립니다. 사용자가 다시 실행해 달라고 하면 다시 실행합니다.
+- 웹 앱 입구(`doGet`)는 바꾸지 않으므로 기본으로 `gas:push`만 하고 `gas:redeploy`와 `gas:deploy`는 하지 않습니다.
 
 ## 함수 이름
 
 쓰는 단계: 6-4, 6-10, 6-12, 6-13, 6-14
 
-사용자는 이 이름으로 편집기의 함수 목록과 트리거 목록에서 함수를 찾습니다.
+사용자나 AI 도구는 이 이름으로 편집기의 함수 목록과 트리거 목록에서 함수를 찾습니다. 편집기에서 함수 실행, 시트 고치기, 트리거 설치·확인·삭제, 스크립트 속성 넣기, Discord 웹훅 만들기는 사용자가 부탁하면 AI 도구가 ego 브라우저로 합니다.
 
 ### 약속
 
-- 사용자가 편집기에서 고르는 함수(이름 끝에 _ 없음): `testDiscordAlert`, `processPendingRecords`, `addDemoProductionRecord`, `installTrainingTriggers`.
+- 편집기에서 골라 실행하는 함수(이름 끝에 _ 없음): `testDiscordAlert`, `processPendingRecords`, `addDemoProductionRecord`, `installTrainingTriggers`.
 - 트리거가 부르는 함수: `onEditInstalled`, `checkRecordDelays`.
 
 ## 잠금
@@ -128,7 +128,7 @@ UrlFetchApp.fetch(주소 + "?wait=true", { method: "post", contentType: "applica
 
 ### 약속
 
-- `testDiscordAlert()`: `withLock_` 안에서 `sendAlert_("test-" + Utilities.getUuid(), "알림 연결 테스트입니다.")`를 부릅니다. 사용자가 편집기에서 골라 실행합니다.
+- `testDiscordAlert()`: `withLock_` 안에서 `sendAlert_("test-" + Utilities.getUuid(), "알림 연결 테스트입니다.")`를 부릅니다. 편집기에서 골라 실행합니다.
 
 ## 설정 이력
 
@@ -235,28 +235,10 @@ UrlFetchApp.fetch(주소 + "?wait=true", { method: "post", contentType: "applica
 
 ### 약속
 
-- 사용자가 편집기에서 골라 실행합니다.
+- 편집기에서 골라 실행합니다.
 - `installTrainingTriggers()`: `SPREADSHEET_ID`가 없으면 "시트를 먼저 생성해 주세요."입니다.
 - 실행 함수가 `onEditInstalled`나 `checkRecordDelays`인 트리거를 모두 지웁니다.
 - 그 뒤 ScriptApp.newTrigger("onEditInstalled").forSpreadsheet(시트 ID).onEdit().create()와 `ScriptApp.newTrigger("checkRecordDelays").timeBased().everyMinutes(1).create()`를 만듭니다.
 - 여러 번 실행해도 두 개만 남습니다.
-
-## 사용자가 직접 하는 일
-
-쓰는 단계: 6-5, 6-6, 6-11, 6-15 ~ 6-19
-
-아래 일은 사용자가 합니다. AI 도구는 실행하지 않습니다. `gas:push`로 올리기만 AI 도구가 프롬프트(6-6, 6-11, 6-15)를 받아 합니다.
-
-- Discord 웹훅 만들기와 스크립트 속성에 웹훅 주소 넣기(6-5)
-- 편집기에서 함수 실행(6-6, 6-11, 6-15, 6-18)
-- 시트를 직접 고치기(6-16, 6-17), 트리거 설치와 지우기(6-15, 6-19)
-
-화면 서버는 사용자가 켜 달라고 할 때 AI 도구가 1회차 문서 '화면 서버 켜기' 절대로 새 PowerShell 창에서 켭니다. 다 쓴 서버를 끄는 일(서버 창을 닫거나 Ctrl+C)은 사용자가 합니다.
-
-### 약속
-
-- Discord 웹훅 주소는 채팅에 옮겨 적지 않고 코드·시트·문서·로그에 쓰지 않습니다. 사용자가 스크립트 속성 `DISCORD_WEBHOOK_URL`에 직접 넣습니다.
-- GAS 편집기 실행, 스크립트 속성, 트리거 메뉴, Discord 설정은 사용자가 직접 합니다.
-- 브라우저를 대신 조작하지 않습니다.
 
 [session-6 문서 끝]
