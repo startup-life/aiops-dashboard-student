@@ -47,7 +47,7 @@ function deploy() {
   if (rows.length !== 1) fail(NO_ID);
   const url = "https://script.google.com/macros/s/" + rows[0][1] + "/exec";
   writeFileSync(CONFIG, text.replace(/(apiBaseUrl\s*:\s*)(["'])[^"']*\2/, (_, key, quote) => key + quote + url + quote).replace(/(timeoutMs\s*:\s*)\d+/, (_, key) => key + "15000"));
-  console.log("public/config.js에 웹 앱 주소와 timeoutMs 15000을 적었습니다. 이 파일은 저장소에 올리지 않습니다.");
+  console.log("public/config.js에 웹 앱 주소와 timeoutMs 15000을 적었습니다.");
 }
 function redeploy() {
   const app = webApp(readFileSync(CONFIG, "utf8"));
