@@ -16,4 +16,4 @@
 
 수강생은 이 저장소를 받지 않고 빈 폴더에서 시작합니다. 1회차 1-2가 이 저장소를 `class`라는 원격 저장소로 더하고, 회차마다 첫 번호 "지침 세팅" 프롬프트가 N회차에는 `milestone-(N-1)`의 `AGENTS.md`와 `docs/guide`를 받아 옵니다(1회차는 강사 제공 파일도 함께). N회차 완료 코드는 `milestone-N`(6회차는 `main`)에 있고, AI 도구는 상세 구현을 확인할 때 `git show`로 읽고, 사용자가 부탁하면(늦어서 따라잡을 때 등) 완료 브랜치의 파일을 가져옵니다.
 
-완료 브랜치를 직접 켜 볼 때는 Windows에서 `npm.cmd start`(macOS: `npm start`)로 켜고 `http://127.0.0.1:4173`을 엽니다. `milestone-4`부터는 `backend` 폴더에서 `npm.cmd ci`, `npm.cmd run build`, `npm.cmd start`로 서버도 켭니다(macOS는 `npm`).
+완료 브랜치를 켜 볼 때는 Windows에서 `npm.cmd start`(macOS: `npm start`)로 켜고 `http://127.0.0.1:4173`을 엽니다. `milestone-4`부터는 `backend` 폴더에서 `npm.cmd ci`, `npm.cmd run build`, `npm.cmd start`로 서버도 켭니다(macOS는 `npm`). AI 도구에 켜 달라고 해도 됩니다.
