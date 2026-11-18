@@ -79,10 +79,10 @@
 
 ### 약속
 
-- `scripts/gas-clasp.mjs`(Google 명령 파일)는 node scripts/gas-clasp.mjs create|deploy|redeploy|open으로 실행하는 Node.js 파일이고, 주석과 빈 줄을 빼고 60줄 안입니다.
+- `scripts/gas-clasp.mjs`(Google 명령 파일)는 node scripts/gas-clasp.mjs create|deploy|redeploy|open으로 실행하는 Node.js 파일이고, 주석과 빈 줄을 빼고 70줄 안입니다. 실행 결과 확인은 공통 함수에서 처리합니다.
 - 네 이름이 아니거나 이름이 없으면 "사용법: node scripts/gas-clasp.mjs create|deploy|redeploy|open"을 오류로 출력하고 종료 코드 1로 끝냅니다.
 - clasp는 "npx " + 인자를 공백으로 이은 한 줄 글자를 `spawnSync`에 `shell: true`로 넘겨 부르고(공백이 든 인자는 큰따옴표로 감쌈), 받은 출력을 화면에 그대로 보여 줍니다.
-- 실패는 모두 오류로 출력하고 종료 코드 1로 끝냅니다.
+- 표준 출력과 오류 출력을 각각 보여 준 뒤 실행 오류와 종료 코드를 확인합니다. 정상 종료(0)일 때만 표준 출력에서 성공 줄을 찾습니다. 실패하면 로그인 안내와 함께 종료 코드 1로 끝내고 설정을 쓰지 않습니다.
 - 로그인 안내 글은 "로그인이 만료됐으면 npm.cmd run gas:login(macOS: npm run gas:login)을 다시 실행하세요."입니다.
 - 웹 앱 주소가 있다는 것은 `apiBaseUrl`이 https://script.google.com/macros/s/(AKfyc로 시작하는 배포 ID)/exec 꼴이라는 뜻입니다.
 
@@ -120,7 +120,7 @@
 프로젝트 만들기(create):
 
 - `.runtime/gas-create`를 지우고 빈 폴더로 만든 뒤 clasp create-script --type standalone --title "텀블공장 개인 백엔드" --rootDir .runtime/gas-create 를 실행합니다.
-- 출력에 `Created new script`가 없으면 "clasp가 프로젝트를 만들지 못했습니다. 위 출력을 확인하고, " + 로그인 안내 글입니다.
+- 표준 출력에 `Created new script:`로 시작하는 줄이 없거나, 생성된 .clasp.json을 읽을 수 없거나 JSON 안에 비어 있지 않은 문자열 scriptId가 없으면 "clasp가 프로젝트를 만들지 못했습니다. 위 출력을 확인하고, " + 로그인 안내 글입니다.
 - 성공하면 `.clasp.json`의 `rootDir`만 "gas"로 바꿔 2칸 들여쓴 JSON + 줄바꿈으로 저장합니다.
 - 이어서 ".clasp.json이 gas 폴더를 가리키게 했습니다. 다음: npm.cmd run gas:push(macOS: npm run gas:push)"를 출력합니다.
 
@@ -135,10 +135,10 @@
 배포(deploy):
 
 - 웹 앱 주소가 이미 있으면 clasp를 부르지 않고 "이미 배포 주소가 있습니다. npm.cmd run gas:redeploy(macOS: npm run gas:redeploy)로 갱신하세요."입니다.
-- 없으면 clasp create-deployment --description dashboard 출력에서 AKfyc로 시작하는 ID(영문·숫자·_·-)를 모아 겹친 것을 빼고 정확히 하나일 때만 성공입니다.
+- 없으면 clasp create-deployment --description dashboard 명령이 정상 종료하고 표준 출력에 독립된 성공 줄 `Deployed (배포 ID) @(버전)`이 정확히 하나일 때만 성공입니다. ID는 AKfyc로 시작하는 영문·숫자·_·-이고 버전은 숫자 또는 HEAD입니다. 오류 줄의 ID는 쓰지 않습니다.
 - 성공하면 `public/config.js`에서 `apiBaseUrl` 값을 https://script.google.com/macros/s/(배포 ID)/exec 로, `timeoutMs` 값을 `15000`으로 바꾸고 나머지 글자는 그대로 둡니다.
 - 그 뒤 "public/config.js에 웹 앱 주소와 timeoutMs 15000을 적었습니다. 이 파일은 저장소에 올리지 않습니다."를 출력합니다.
-- ID가 하나가 아니면 `config.js`를 바꾸지 않고 "clasp 출력에서 배포 ID를 찾지 못했습니다. 위 출력을 확인하고, " + 로그인 안내 글입니다.
+- 성공 줄이 없거나 여러 줄이면 `config.js`를 바꾸지 않고 "clasp 출력에서 배포 ID를 찾지 못했습니다. 위 출력을 확인하고, " + 로그인 안내 글입니다.
 
 ## 다시 배포와 웹 앱 열기 명령
 
@@ -152,12 +152,12 @@
 
 - 웹 앱 주소가 없으면 "public/config.js에 웹 앱 주소가 없습니다. 먼저 npm.cmd run gas:deploy(macOS: npm run gas:deploy)를 실행하세요."입니다.
 - 있으면 clasp update-deployment (배포 ID) --description dashboard 를 실행합니다.
-- 출력에 "Redeployed (배포 ID) @"가 있으면 "같은 배포를 새 버전으로 갱신했습니다. 주소는 그대로입니다.", 없으면 deploy('배포 명령')의 배포 ID 문장으로 실패합니다.
+- 정상 종료하고 표준 출력 한 줄 전체가 "Redeployed (기존 배포 ID) @(버전)"과 일치하면(버전은 숫자 또는 HEAD) "같은 배포를 새 버전으로 갱신했습니다. 주소는 그대로입니다.", 없으면 deploy('배포 명령')의 배포 ID 문장으로 실패합니다.
 
 웹 앱 열기(open):
 
 - 웹 앱 주소가 없으면 redeploy와 같은 문장으로 실패합니다.
-- 있으면 "브라우저로 엽니다. JSON이 보이면 웹 앱이 동작합니다."와 주소 + "?path=/api/v1/snapshot"을 출력하고 그 주소를 기본 브라우저로 엽니다(Windows `start ""`, macOS `open`, 그 밖 `xdg-open`).
+- 있으면 "브라우저로 엽니다. JSON이 보이면 웹 앱이 동작합니다."와 주소 + "?path=/api/v1/snapshot"을 출력하고 그 주소를 기본 브라우저로 엽니다(Windows `start ""`, macOS `open`, 그 밖 `xdg-open`). Windows에서는 빈 제목과 따옴표로 감싼 주소를 셸 명령 문자열 하나로 전달합니다. 열기 명령이 실패하면 주소를 직접 열라는 안내와 종료 코드 1을 돌려줍니다.
 
 ## 웹 앱 설정 파일
 
