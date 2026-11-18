@@ -14,7 +14,7 @@
 
 ## 회차를 시작할 때
 
-수강생은 이 저장소를 받지 않고 빈 폴더에서 시작합니다. 1회차 1-2가 이 저장소를 `class`라는 원격 저장소로 더하고, 회차마다 첫 번호 "지침 세팅" 프롬프트가 N회차에는 `milestone-(N-1)`의 `AGENTS.md`와 `docs/guide`를 받아 옵니다(1회차는 강사 제공 파일과 `.gitignore`도 함께). N회차 완료 코드는 `milestone-N`(6회차는 `main`)에 있고, AI 도구는 상세 구현을 확인할 때 `git show`로 읽기만 합니다.
+수강생은 이 저장소를 받지 않고 빈 폴더에서 시작합니다. 1회차 1-2가 이 저장소를 `class`라는 원격 저장소로 더하고, 회차마다 첫 번호 "지침 세팅" 프롬프트가 N회차에는 `milestone-(N-1)`의 `AGENTS.md`와 `docs/guide`를 받아 옵니다(1회차는 강사 제공 파일도 함께). N회차 완료 코드는 `milestone-N`(6회차는 `main`)에 있고, AI 도구는 상세 구현을 확인할 때 `git show`로 읽고, 사용자가 부탁하면(늦어서 따라잡을 때 등) 완료 브랜치의 파일을 가져옵니다.
 
 완료 브랜치를 직접 켜 볼 때는 Windows에서 `npm.cmd start`(macOS: `npm start`)로 켜고 `http://127.0.0.1:4173`을 엽니다. `milestone-4`부터는 `backend` 폴더에서 `npm.cmd ci`, `npm.cmd run build`, `npm.cmd start`로 서버도 켭니다(macOS는 `npm`).
 
@@ -23,7 +23,7 @@
 - Windows: `npm.cmd start`, macOS: `npm start`
 - 주소: http://127.0.0.1:4173
 - 서버를 켠 창을 닫거나 Ctrl+C를 누르면 멈춥니다.
-- 4173번 포트를 다른 프로그램이 쓰고 있으면 그 창을 먼저 닫습니다.
+- 4173번 포트를 다른 프로그램이 쓰고 있으면 그 프로그램을 먼저 끕니다. AI 도구에 꺼 달라고 해도 됩니다.
 
 ## 검사
 
@@ -47,4 +47,4 @@
 | 2단계 내 서버 | `"http://127.0.0.1:3000"` | 5000 |
 | 3단계 내 GAS 웹 앱 | `"<GAS 웹앱 주소>"` | 15000 |
 
-단계를 바꿀 때는 `apiBaseUrl`과 `timeoutMs` 두 값만 바꿉니다. 3단계 GAS 웹 앱 주소는 문서에 적지 않고 내 컴퓨터의 메모와 `public/config.js`에만 둡니다.
+단계를 바꿀 때는 `apiBaseUrl`과 `timeoutMs` 두 값만 바꿉니다. 3단계 GAS 웹 앱 주소는 `public/config.js`에 있습니다.
