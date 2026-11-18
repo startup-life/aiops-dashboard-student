@@ -40,7 +40,7 @@ PC 오늘 운영 전체 화면
 ```text
 [2-1] 이번 회차 문서를 이 프로젝트로 가져오기 위해, 수업 저장소(class)를 다시 받아 class/milestone-1의 AGENTS.md와 docs/guide를 git checkout class/milestone-1 -- AGENTS.md docs/guide 꼴로 이 프로젝트로 가져와 주세요(브랜치는 옮기지 않습니다).
 그다음 AGENTS.md를 작업 지침으로 삼아 주세요. 프롬프트에 없는 상세 구현은 docs/guide의 회차 문서와 그 회차 완료 브랜치 코드(class/milestone-2)에서 확인합니다.
-지금은 AGENTS.md와 docs/guide의 회차 문서를 끝까지 읽기만 하고, 답 맨 앞에 "읽은 문서: session-1 ~ session-2" 꼴로 읽은 문서를 한 줄로 알려 주세요.
+이번 번호에서는 AGENTS.md와 docs/guide의 회차 문서를 끝까지 읽고, 만드는 일은 다음 번호부터 합니다. 답 맨 앞에 "읽은 문서: session-1 ~ session-2" 꼴로 읽은 문서를 한 줄로 알려 주세요.
 ```
 
 - 하는 일: 수업 저장소 `milestone-1`에서 규칙 파일과 보충 문서를 앱 폴더로 가져오고, AI 도구가 1~2회차 문서를 읽어 둡니다. `docs\guide`에 2회차 보충 문서가 새로 생깁니다.
@@ -132,7 +132,7 @@ PC 오늘 운영 전체 화면
 
 ```text
 [2-7] 다음 회차에 받은 자료로 화면을 쉽게 다시 그리도록, 화면 JavaScript에 화면 전체를 채우는 그리기 함수를 추가해 주세요.
-화면에 보이는 것은 바꾸지 마세요.
+이번 번호에서는 화면에 보이는 것은 그대로 둡니다.
 자세한 내용은 docs/guide/session-2.md의 "예시 자료와 화면 코드의 구성"을 참고해 주세요.
 ```
 
