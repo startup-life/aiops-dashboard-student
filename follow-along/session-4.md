@@ -47,7 +47,7 @@
 ```text
 [4-1] 이번 회차 문서를 이 프로젝트로 가져오기 위해, 수업 저장소(class)를 다시 받아 class/milestone-3의 AGENTS.md와 docs/guide를 git checkout class/milestone-3 -- AGENTS.md docs/guide 꼴로 이 프로젝트로 가져와 주세요(브랜치는 옮기지 않습니다).
 그다음 AGENTS.md를 작업 지침으로 삼아 주세요. 프롬프트에 없는 상세 구현은 docs/guide의 회차 문서와 그 회차 완료 브랜치 코드(class/milestone-4)에서 확인합니다.
-지금은 AGENTS.md와 docs/guide의 회차 문서를 끝까지 읽기만 하고, 답 맨 앞에 "읽은 문서: session-1 ~ session-4" 꼴로 읽은 문서를 한 줄로 알려 주세요.
+이번 번호에서는 AGENTS.md와 docs/guide의 회차 문서를 끝까지 읽고, 만드는 일은 다음 번호부터 합니다. 답 맨 앞에 "읽은 문서: session-1 ~ session-4" 꼴로 읽은 문서를 한 줄로 알려 주세요.
 ```
 
 - 하는 일: 수업 저장소 `milestone-3`에서 규칙 파일과 보충 문서를 앱 폴더로 가져오고, AI 도구가 1~4회차 문서를 읽어 둡니다. `docs\guide`에 4회차 보충 문서가 새로 생깁니다.
@@ -80,7 +80,7 @@
 - 하는 일: AI 도구가 `backend` 폴더에 패키지 목록대로 NestJS 패키지를 설치하고, 설치된 패키지 목록을 답에 적습니다.
 - 목표: 4-5에서 서버를 빌드하고 켜려면 이 패키지들이 있어야 합니다. 버전을 고정해 두므로 모두 같은 버전으로 설치됩니다.
 - 완료 기준:
-  - `backend\node_modules`와 `backend\package-lock.json`이 생깁니다. 취약점(vulnerabilities) 안내가 나와도 그대로 둡니다(`npm audit fix`를 실행하지 않습니다).
+  - `backend\node_modules`와 `backend\package-lock.json`이 생깁니다. 취약점(vulnerabilities) 안내가 나와도 괜찮습니다. `npm audit fix`를 하면 패키지 버전이 바뀌어 수업 코드와 다르게 동작할 수 있습니다.
   - AI 도구 답의 `npm.cmd ls --depth=0` 결과에 `@nestjs/common@11.2.7`, `@nestjs/core@11.2.7`, `@nestjs/platform-express@11.2.7`, `@types/node@24.4.0`, `reflect-metadata@0.2.2`, `rxjs@7.8.2`, `typescript@5.9.3` 일곱 줄이 나옵니다.
 
 ![4-3 설치 뒤 생성된 node_modules 폴더와 package-lock.json](images/session-4/04-4-3-installed.jpg)
@@ -116,8 +116,8 @@
 - 완료 기준:
   - AI 도구가 연 서버 창에서 `[Nest]`로 시작하는 줄 가운데 `Mapped {/api/v1/health, GET} route`가 있고, 마지막 줄이 `Nest application successfully started`입니다. ego 브라우저에서 `http://127.0.0.1:3000/api/v1/health`를 열면 `{"status":"ok","releaseId":"local"}`이 보입니다.
   - 명령 창에서 `curl.exe -i "http://127.0.0.1:3000/api/v1/health"`를 치면 `HTTP/1.1 200 OK`, `Access-Control-Allow-Origin: *`, `Cache-Control: no-store` 줄이 보입니다.
-- 막히면: Windows 방화벽 허용 창이 뜨면 취소하고 강사에게 알립니다. 이 서버는 이 PC 안에서만 열려야 합니다.
-- 막히면: 서버 창에 `EADDRINUSE`가 나오면 3000번 포트를 다른 프로그램이 쓰고 있습니다. 그 줄을 복사해 AI 도구에 붙여 넣고, AI 도구가 다른 프로그램이 쓰고 있다고 답하면 AI 도구에 그 프로그램을 꺼 달라고 합니다. 무슨 프로그램인지 모르겠으면 강사에게 알립니다.
+- 막히면: Windows 방화벽 허용 창이 뜨면 취소합니다. 이 서버는 이 PC 안에서만 열려야 합니다. AI 도구에 "방화벽 허용 창이 떴어요. 서버가 이 PC 안에서만 열리게 고쳐 주세요."라고 보냅니다.
+- 막히면: 서버 창에 `EADDRINUSE`가 나오면 3000번 포트를 다른 프로그램이 쓰고 있습니다. 그 줄을 복사해 AI 도구에 붙여 넣고, AI 도구가 다른 프로그램이 쓰고 있다고 답하면 AI 도구에 그 프로그램을 꺼 달라고 합니다. 무슨 프로그램인지 모르겠으면 AI 도구에 찾아서 꺼 달라고 합니다.
 - 알아 두기: `Access-Control-Allow-Origin: *`는 4173에서 열린 화면이 3000의 내 서버 자료를 읽어도 된다는 허용 표시입니다. 이 줄이 없으면 4-12에서 Console 탭에 CORS 오류가 나옵니다. `Cache-Control: no-store`는 브라우저가 응답을 저장해 두지 않고 늘 새로 받게 하는 표시입니다.
 
 ![4-5 Ego 브라우저에서 확인한 서버 상태 응답](images/session-4/06-4-5-health.png)
@@ -201,7 +201,7 @@
 
 ```text
 [4-10] 화면이 내 서버에서도 현장 사진을 받도록, 강사 사진 두 장을 내 서버 폴더로 복사하고 사진을 돌려주는 주소를 추가해 주세요.
-사진 파일은 열거나 바꾸지 마세요.
+이번 번호에서는 사진 파일을 내용 그대로 복사합니다.
 자세한 내용은 docs/guide/session-4.md의 "현장 사진"과 "주소와 응답"을 참고해 주세요.
 ```
 
@@ -219,7 +219,7 @@
 
 ```text
 [4-11] 화면이 강사 API 대신 내 서버 값을 읽도록, 연결 설정 파일의 연결 주소를 내 서버 주소로 바꿔 주세요.
-기다리는 시간과 다른 파일은 그대로 둡니다.
+이번 번호에서는 연결 주소 한 값만 바꿉니다.
 자세한 내용은 docs/guide/session-4.md의 "내 서버의 구성"을 참고해 주세요.
 ```
 
