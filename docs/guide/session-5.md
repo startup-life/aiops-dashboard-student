@@ -138,7 +138,7 @@
 - 웹 앱 주소가 이미 있으면 clasp를 부르지 않고 "이미 배포 주소가 있습니다. npm.cmd run gas:redeploy(macOS: npm run gas:redeploy)로 갱신하세요."입니다.
 - 없으면 clasp create-deployment --description dashboard 명령이 정상 종료하고 표준 출력에 독립된 성공 줄 `Deployed (배포 ID) @(버전)`이 정확히 하나일 때만 성공입니다. ID는 AKfyc로 시작하는 영문·숫자·_·-이고 버전은 숫자 또는 HEAD입니다. 오류 줄의 ID는 쓰지 않습니다.
 - 성공하면 `public/config.js`에서 `apiBaseUrl` 값을 https://script.google.com/macros/s/(배포 ID)/exec 로, `timeoutMs` 값을 `15000`으로 바꾸고 나머지 글자는 그대로 둡니다.
-- 그 뒤 "public/config.js에 웹 앱 주소와 timeoutMs 15000을 적었습니다. 이 파일은 저장소에 올리지 않습니다."를 출력합니다. 둘째 문장은 명령이 찍는 안내일 뿐입니다. 사용자가 push를 부탁하면 config.js도 다른 파일처럼 올립니다.
+- 그 뒤 "public/config.js에 웹 앱 주소와 timeoutMs 15000을 적었습니다."를 출력합니다.
 - 성공 줄이 없거나 여러 줄이면 `config.js`를 바꾸지 않고 "clasp 출력에서 배포 ID를 찾지 못했습니다. 위 출력을 확인하고, " + 로그인 안내 글입니다.
 
 ## 다시 배포와 웹 앱 열기 명령
@@ -159,12 +159,6 @@
 
 - 웹 앱 주소가 없으면 redeploy와 같은 문장으로 실패합니다.
 - 있으면 "브라우저로 엽니다. JSON이 보이면 웹 앱이 동작합니다."와 주소 + "?path=/api/v1/snapshot"을 출력하고 그 주소를 기본 브라우저로 엽니다(Windows `start ""`, macOS `open`, 그 밖 `xdg-open`). Windows에서는 빈 제목과 따옴표로 감싼 주소를 셸 명령 문자열 하나로 전달합니다. 열기 명령이 실패하면 주소를 직접 열라는 안내와 종료 코드 1을 돌려줍니다.
-
-**Windows 실배포 검수 기록 (2026-11-18)**
-
-별도 Google 프로젝트에서 `gas:create`로 프로젝트를 만들고 `gas:push`로 파일 5개를 올렸습니다. `gas:deploy`로 만든 버전 1의 웹 앱은 공장 100, 창고 75로 응답했습니다.
-
-응답에 검수용 값을 추가해 다시 올린 직후에는 같은 주소에서 버전 1의 응답이 유지됐습니다. `gas:redeploy`로 버전 2를 배포한 뒤 같은 주소를 열자 새 값이 나타났습니다. 세 번 모두 HTTP 200이었으며 마지막 응답은 Ego 브라우저에서도 확인했습니다.
 
 ## 웹 앱 설정 파일
 
@@ -510,10 +504,11 @@ Get-Content "$env:TEMP\clasp-login.txt"
 ### 약속
 
 - 네 명령은 그 명령을 실행하라는 프롬프트를 받거나 사용자가 부탁하면, 프롬프트나 사용자가 말한 차례대로 한 번씩 실행합니다. Windows에서는 `npm.cmd run gas:create`처럼 칩니다.
-- `gas:create`가 "Project file already exists."로 실패하면(이어서 "clasp가 프로젝트를 만들지 못했습니다. …"가 나와도) 이미 만든 프로젝트가 있는 것입니다. 다시 실행해도 같은 결과가 나오므로 다음 명령으로 갑니다.
-- `gas:deploy`는 처음 한 번 합니다. 실패하면 저절로 다시 실행하지 않고 오류 줄을 알립니다. 사용자가 다시 실행해 달라고 하면 다시 실행합니다. 웹 앱 주소가 이미 있으면 다시 실행해도 새 배포를 만들지 않습니다. "이미 배포 주소가 있습니다. …"가 나오면 배포가 이미 있는 것입니다.
+- `gas:create`가 "Project file already exists."로 실패하면(이어서 "로그인이 만료됐으면 …"이 나와도) 이미 만든 프로젝트가 있는 것입니다. 다시 실행해도 같은 결과가 나오므로 다음 명령으로 갑니다.
+- 프롬프트를 따라갈 때 `gas:deploy`는 5-18에서 한 번 합니다. 실패하면 저절로 다시 실행하지 않고 오류 줄을 알립니다. 사용자가 다시 실행해 달라고 하면 다시 실행합니다. 웹 앱 주소가 이미 있으면 다시 실행해도 새 배포를 만들지 않습니다. "이미 배포 주소가 있습니다. …"가 나오면 배포가 이미 있는 것입니다. 사용자가 새 배포나 새 주소를 부탁하면 `public/config.js`의 `apiBaseUrl`을 내 서버 주소 "http://127.0.0.1:3000"으로 바꾼 뒤 gas:deploy를 하고, 주소가 바뀌며 예전 주소도 남는다고 한 줄 알립니다.
 - 사용자가 프로젝트를 새로 만들어 달라고 하면(다른 Google 계정으로 처음부터 할 때 등) gas:login을 다시 하고 `.clasp.json`을 지운 뒤 gas:create와 gas:push를 합니다. 새 웹 앱 주소가 필요하면 `public/config.js`의 `apiBaseUrl`을 "http://127.0.0.1:3000"으로 되돌린 뒤 gas:deploy를 하고, 주소가 바뀐다고 한 줄 알립니다.
 - Google 쪽 코드를 고치면 `gas:push` 뒤 `gas:redeploy`를 합니다. 웹 앱은 배포한 때의 코드로 답하므로 올리기만 해서는 바뀌지 않습니다. 주소는 그대로입니다.
+- `gas:redeploy`나 `gas:open`이 "웹 앱 주소가 없습니다"로 실패하면 `npx.cmd --yes @google/clasp@3.4.1 list-deployments`로 설명이 dashboard인 배포를 찾습니다. 그 배포 ID로 https://script.google.com/macros/s/(배포 ID)/exec 주소를 만들어 `apiBaseUrl`에, `timeoutMs`에 `15000`을 넣고 다시 실행합니다. 그런 배포가 없을 때만 gas:deploy를 합니다.
 - 명령이 "User has not enabled the Apps Script API"나 `invalid_grant`로 실패하면 저절로 다시 실행하지 않고 오류 줄을 알립니다. Apps Script API 켜기(5-2)나 Google 로그인(5-6)을 다시 해야 합니다. 사용자가 부탁하면 AI 도구가 ego 브라우저로 그 일을 하고 명령을 다시 실행합니다.
 - 결과는 프롬프트가 말한 줄을 알립니다.
 
