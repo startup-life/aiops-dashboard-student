@@ -141,23 +141,23 @@
 - 그 뒤 "public/config.js에 웹 앱 주소와 timeoutMs 15000을 적었습니다."를 출력합니다.
 - 성공 줄이 없거나 여러 줄이면 `config.js`를 바꾸지 않고 "clasp 출력에서 배포 ID를 찾지 못했습니다. 위 출력을 확인하고, " + 로그인 안내 글입니다.
 
-## 다시 배포와 웹 앱 열기 명령
+## 다시 배포와 웹 서비스 열기 명령
 
 쓰는 단계: 5-5
 
-다시 배포는 새 배포를 만들지 않고 같은 주소를 새 버전으로 바꿉니다. 웹 앱 열기는 웹 앱 주소를 기본 브라우저로 엽니다.
+다시 배포는 새 배포를 만들지 않고 같은 주소를 새 버전으로 바꿉니다. 열기 명령은 배포한 웹 서비스를 기본 브라우저에서 엽니다.
 
 ### 약속
 
 다시 배포(redeploy):
 
-- 웹 앱 주소가 없으면 "public/config.js에 웹 앱 주소가 없습니다. 먼저 npm.cmd run gas:deploy(macOS: npm run gas:deploy)를 실행하세요."입니다.
+- 웹 서비스 주소가 없으면 "public/config.js에 웹 앱 주소가 없습니다. 먼저 npm.cmd run gas:deploy(macOS: npm run gas:deploy)를 실행하세요."입니다.
 - 있으면 clasp update-deployment (배포 ID) --description dashboard 를 실행합니다.
 - 정상 종료하고 표준 출력 한 줄 전체가 "Redeployed (기존 배포 ID) @(버전)"과 일치하면(버전은 숫자 또는 HEAD) "같은 배포를 새 버전으로 갱신했습니다. 주소는 그대로입니다.", 없으면 deploy('배포 명령')의 배포 ID 문장으로 실패합니다.
 
-웹 앱 열기(open):
+웹 서비스 열기(open):
 
-- 웹 앱 주소가 없으면 redeploy와 같은 문장으로 실패합니다.
+- 웹 서비스 주소가 없으면 redeploy와 같은 문장으로 실패합니다.
 - 있으면 "브라우저로 엽니다. JSON이 보이면 웹 앱이 동작합니다."와 주소 + "?path=/api/v1/snapshot"을 출력하고 그 주소를 기본 브라우저로 엽니다(Windows `start ""`, macOS `open`, 그 밖 `xdg-open`). Windows에서는 빈 제목과 따옴표로 감싼 주소를 셸 명령 문자열 하나로 전달합니다. 열기 명령이 실패하면 주소를 직접 열라는 안내와 종료 코드 1을 돌려줍니다.
 
 ## 웹 앱 설정 파일
