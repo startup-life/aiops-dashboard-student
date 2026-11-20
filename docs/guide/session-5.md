@@ -39,44 +39,44 @@
 
 이 문서는 완성된 모양을 한 번에 적었습니다. 프롬프트가 부탁한 범위를 만듭니다.
 
-- Google 명령 파일을 만드는 동안(5-3 ~ 5-5)에는 기본으로 명령을 실행하지 않습니다. Google 명령은 5-16, 5-18처럼 실행하라는 프롬프트를 받거나 사용자가 부탁하면 실행합니다.
+- gas-clasp.mjs (Google 명령 파일)을 만드는 동안(5-3 ~ 5-5)에는 기본으로 명령을 실행하지 않습니다. Google 명령은 5-16, 5-18처럼 실행하라는 프롬프트를 받거나 사용자가 부탁하면 실행합니다.
 - 네 명령의 내용은 5-4, 5-5에서 채웁니다. 틀을 만드는 5-3에는 넣지 않습니다.
-- 웹 앱 입구는 오늘 운영 자료 길, 기록 조회 길과 함께 5-15에서 만듭니다. 그 앞 단계에서 만들지 않습니다.
+- doGet (웹 앱 요청을 받는 함수)는 오늘 운영 자료 길, records 요청 경로 (기록을 조회하는 주소)와 함께 5-15에서 만듭니다. 그 앞 단계에서 만들지 않습니다.
 
 ## 프롬프트의 말과 실제 이름
 
 쓰는 단계: 5-3 ~ 5-18
 
-프롬프트에는 파일과 함수 이름을 적지 않습니다. 프롬프트의 말이 가리키는 이름은 다음과 같습니다.
+프롬프트에 나오는 파일·함수의 이름과 쓰임을 표에서 확인할 수 있습니다.
 
-| 프롬프트의 말 | 실제 이름 |
+| 실제 이름 | 프롬프트에서 뜻하는 일 |
 |---|---|
-| Google 명령 파일 | `scripts/gas-clasp.mjs` |
-| npm 명령 목록의 Google 명령 일곱 개 | `gas:login`, `gas:create`, `gas:push`, `gas:deploy`, `gas:redeploy`, `gas:open`, `gas:editor` |
-| npm 명령 gas:create, gas:push, gas:deploy, gas:redeploy | `npm.cmd run gas:create`처럼 `npm.cmd run` 뒤에 그 이름 |
-| 연결 설정 | `public/config.js` |
-| Google 쪽 코드 폴더 | `gas` |
-| 웹 앱 설정 파일 | `gas/appsscript.json` |
-| 연습 파일(작은 계산 다섯 가지) | `gas/Exercises.gs` |
-| 계산 파일 | `gas/Core.gs`의 `TumbleCore` |
-| 시각과 기준 시각 검사(시각 바꾸기, 한국 날짜 구하기, 기준 시각 검사) | `iso`, `day`, `view` |
-| 시트 행 바꾸기(시트에 적힌 행을 화면이 쓸 기록으로 바꾸고 틀린 행은 오류 목록에 모으는 일) | `parse` |
-| 기록 고르기(기준 시각까지의 기록을 고르는 일) | `recordsAt` |
-| 오늘 운영 화면이 받는 자료, 오늘 운영 자료 | `snapshot` |
-| 확인할 일 목록(먼저 확인할 일 상자에 나올 목록) | `incidents` |
-| 시트 작업 파일 | `gas/Code.gs` |
-| 칸 값 쓰고 읽기, 이름으로 탭 읽기 | `toCell_`, `toRow_`, `fromCell_`, `rows_` |
-| 설정 탭에 지금 적힌 값을 읽어 검사하는 일(설정 탭 읽기), 세션 정보를 읽는 일 | `settings_`, `meta_` |
-| 웹 앱 응답 만들기(웹 앱이 JSON으로 답하는 일), 알림 기록 탭 읽기 | `json_`, `alerts_` |
-| 생산 기록·출고 기록 탭 읽기 | `readData_` |
-| 웹 앱 입구, 오늘 운영 자료를 답하는 길, 기록 조회 길 | `doGet`, `api/v1/snapshot`, `api/v1/records` |
-| 실습용 Google 시트를 새로 만드는 기능 | `gas/Setup.gs`의 `createTrainingSpreadsheet` |
+| `scripts/gas-clasp.mjs` | Google 명령 파일 |
+| `gas:login`, `gas:create`, `gas:push`, `gas:deploy`, `gas:redeploy`, `gas:open`, `gas:editor` | npm 명령 목록의 Google 명령 일곱 개 |
+| `npm.cmd run gas:create`처럼 `npm.cmd run` 뒤에 그 이름 | npm 명령 gas:create, gas:push, gas:deploy, gas:redeploy |
+| `public/config.js` | 연결 설정 |
+| `gas` | Google 쪽 코드 폴더 |
+| `gas/appsscript.json` | 웹 앱 설정 파일 |
+| `gas/Exercises.gs` | 연습 파일(작은 계산 다섯 가지) |
+| `gas/Core.gs`의 `TumbleCore` | 계산 파일 |
+| `iso`, `day`, `view` | 시각과 기준 시각 검사(시각 바꾸기, 한국 날짜 구하기, 기준 시각 검사) |
+| `parse` | 시트 행 바꾸기(시트에 적힌 행을 화면이 쓸 기록으로 바꾸고 틀린 행은 오류 목록에 모으는 일) |
+| `recordsAt` | 기록 고르기(기준 시각까지의 기록을 고르는 일) |
+| `snapshot` | 오늘 운영 화면이 받는 자료, 오늘 운영 자료 |
+| `incidents` | 확인할 일 목록(먼저 확인할 일 상자에 나올 목록) |
+| `gas/Code.gs` | 시트 작업 파일 |
+| `toCell_`, `toRow_`, `fromCell_`, `rows_` | 칸 값 쓰고 읽기, 이름으로 탭 읽기 |
+| `settings_`, `meta_` | 설정 탭에 지금 적힌 값을 읽어 검사하는 일(설정 탭 읽기), 세션 정보를 읽는 일 |
+| `json_`, `alerts_` | 웹 앱 응답 만들기(웹 앱이 JSON으로 답하는 일), 알림 기록 탭 읽기 |
+| `readData_` | 생산 기록·출고 기록 탭 읽기 |
+| `doGet`, `api/v1/snapshot`, `api/v1/records` | 웹 앱 입구, 오늘 운영 자료를 답하는 길, 기록 조회 길 |
+| `gas/Setup.gs`의 `createTrainingSpreadsheet` | 실습용 Google 시트를 새로 만드는 기능 |
 
-## Google 명령 파일의 틀
+## 보일러플레이트 (Google 명령 파일의 틀)
 
 쓰는 단계: 5-3
 
-이 바탕은 네 명령이 함께 씁니다. Windows에서도 되게 하고 clasp가 낸 출력은 화면에 그대로 보여 줍니다.
+여기서 보일러플레이트는 `gas-clasp.mjs`에서 네 명령이 공통으로 쓰는 기본 코드입니다. 이 코드로 Windows에서도 clasp를 실행하고 그 결과를 화면에 그대로 보여 줍니다.
 
 ### 약속
 
@@ -114,7 +114,7 @@
 
 쓰는 단계: 5-4
 
-빈 폴더에 Google 프로젝트를 만들고, 실패하면 약속한 안내로 끝납니다. 성공한 뒤에는 만든 프로젝트가 Google 쪽 코드 폴더를 가리키게 합니다.
+빈 폴더에 Google 프로젝트를 만들고, 실패하면 약속한 안내로 끝납니다. 성공한 뒤에는 만든 프로젝트가 gas (GAS 코드를 두는 폴더)를 가리키게 합니다.
 
 ### 약속
 
@@ -212,7 +212,7 @@
 
 쓰는 단계: 5-9
 
-이 단계에서 계산 파일을 만듭니다. 이 파일에 넣는 함수는 단계마다 늘어나고 5-11이 끝나면 돌려주는 이름이 여섯 개가 됩니다.
+이 단계에서 Core.gs (계산 파일)을 만듭니다. 이 파일에 넣는 함수는 단계마다 늘어나고 5-11이 끝나면 돌려주는 이름이 여섯 개가 됩니다.
 
 ### 약속
 
@@ -228,7 +228,7 @@ var TumbleCore = (function () { … return { iso, day, view, parse, recordsAt, s
 | `day(value)` | 한국 날짜 "YYYY-MM-DD" |
 | `view(at, now)` | 기준 시각(`at`, 빈 글자이거나 없으면 `now`)의 한국 날짜가 `now`와 다르거나 `now`보다 늦으면 "오늘의 현재 이전 시각을 선택해 주세요." |
 
-`iso`와 `view`는 문제가 있으면 표의 문장으로 오류를 던집니다(`throw Error(문장)`). 웹 앱 입구가 그 오류를 잡아서 답합니다.
+`iso`와 `view`는 문제가 있으면 표의 문장으로 오류를 던집니다(`throw Error(문장)`). doGet (웹 앱 요청을 받는 함수)가 그 오류를 잡아서 답합니다.
 
 ## 시트 행 바꾸기
 
@@ -436,7 +436,7 @@ var TumbleCore = (function () { … return { iso, day, view, parse, recordsAt, s
 
 쓰는 단계: 5-14, 5-15
 
-이 절의 json_(값)과 `alerts_()`는 5-14에서 만듭니다. 오류를 모두 잡아 답하는 부분은 5-15의 웹 앱 입구에서 씁니다.
+이 절의 json_(값)과 `alerts_()`는 5-14에서 만듭니다. 오류를 모두 잡아 답하는 부분은 5-15의 doGet (웹 앱 요청을 받는 함수)에서 씁니다.
 
 ### 약속
 
@@ -476,11 +476,11 @@ var TumbleCore = (function () { … return { iso, day, view, parse, recordsAt, s
 
 쓰는 단계: 5-15
 
-5-15에서 오늘 운영 자료 길, 기록 조회 길("생산 또는 출고 기록을 선택해 주세요."가 든 부분), 그 밖의 길에 답하는 안내 문장을 함께 만듭니다. 모든 오류는 '웹 앱 응답과 알림 기록 읽기'대로 여기서 잡아 답합니다.
+5-15에서 snapshot 요청 경로 (오늘 운영 자료를 조회하는 주소), records 요청 경로("생산 또는 출고 기록을 선택해 주세요."가 든 부분), 그 밖의 길에 답하는 안내 문장을 함께 만듭니다. 모든 오류는 '웹 앱 응답과 알림 기록 읽기'대로 여기서 잡아 답합니다.
 
 ### 약속
 
-웹 앱 입구 `doGet(e)`는 `path` 매개변수의 앞뒤 /를 모두 떼고 아래처럼 답합니다. 아래의 오류 문장은 모두 { error: 문장 }으로 답합니다.
+`doGet(e)` (웹 앱 요청을 받는 함수)는 `path` 매개변수의 앞뒤 /를 모두 떼고 아래처럼 답합니다. 아래의 오류 문장은 모두 { error: 문장 }으로 답합니다.
 
 | `path` | 답 |
 |---|---|
@@ -507,7 +507,7 @@ Get-Content "$env:TEMP\clasp-login.txt"
 - `gas:create`가 "Project file already exists."로 실패하면(이어서 "로그인이 만료됐으면 …"이 나와도) 이미 만든 프로젝트가 있는 것입니다. 다시 실행해도 같은 결과가 나오므로 다음 명령으로 갑니다.
 - 프롬프트를 따라갈 때 `gas:deploy`는 5-18에서 한 번 합니다. 실패하면 저절로 다시 실행하지 않고 오류 줄을 알립니다. 사용자가 다시 실행해 달라고 하면 다시 실행합니다. 웹 앱 주소가 이미 있으면 다시 실행해도 새 배포를 만들지 않습니다. "이미 배포 주소가 있습니다. …"가 나오면 배포가 이미 있는 것입니다. 사용자가 새 배포나 새 주소를 부탁하면 `public/config.js`의 `apiBaseUrl`을 내 서버 주소 "http://127.0.0.1:3000"으로 바꾼 뒤 gas:deploy를 하고, 주소가 바뀌며 예전 주소도 남는다고 한 줄 알립니다.
 - 사용자가 프로젝트를 새로 만들어 달라고 하면(다른 Google 계정으로 처음부터 할 때 등) gas:login을 다시 하고 `.clasp.json`을 지운 뒤 gas:create와 gas:push를 합니다. 새 웹 앱 주소가 필요하면 `public/config.js`의 `apiBaseUrl`을 "http://127.0.0.1:3000"으로 되돌린 뒤 gas:deploy를 하고, 주소가 바뀐다고 한 줄 알립니다.
-- Google 쪽 코드를 고치면 `gas:push` 뒤 `gas:redeploy`를 합니다. 웹 앱은 배포한 때의 코드로 답하므로 올리기만 해서는 바뀌지 않습니다. 주소는 그대로입니다.
+- GAS (Google 쪽 코드)를 고치면 `gas:push` 뒤 `gas:redeploy`를 합니다. 웹 앱은 배포한 때의 코드로 답하므로 올리기만 해서는 바뀌지 않습니다. 주소는 그대로입니다.
 - `gas:redeploy`나 `gas:open`이 "웹 앱 주소가 없습니다"로 실패하면 `npx.cmd --yes @google/clasp@3.4.1 list-deployments`로 설명이 dashboard인 배포를 찾습니다. 그 배포 ID로 https://script.google.com/macros/s/(배포 ID)/exec 주소를 만들어 `apiBaseUrl`에, `timeoutMs`에 `15000`을 넣고 다시 실행합니다. 그런 배포가 없을 때만 gas:deploy를 합니다.
 - 명령이 "User has not enabled the Apps Script API"나 `invalid_grant`로 실패하면 저절로 다시 실행하지 않고 오류 줄을 알립니다. Apps Script API 켜기(5-2)나 Google 로그인(5-6)을 다시 해야 합니다. 사용자가 부탁하면 AI 도구가 ego 브라우저로 그 일을 하고 명령을 다시 실행합니다.
 - 결과는 프롬프트가 말한 줄을 알립니다.
