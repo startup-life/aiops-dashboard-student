@@ -492,14 +492,9 @@ var TumbleCore = (function () { … return { iso, day, view, parse, recordsAt, s
 
 쓰는 단계: 5-16, 5-18
 
-`gas:create`, `gas:push`, `gas:deploy`, `gas:redeploy`는 AI 도구가 실행합니다. `gas:login`, `gas:editor`, `gas:open`은 브라우저를 여는 명령입니다. 사용자가 부탁하면 AI 도구가 실행하고, 다른 브라우저가 열리면 명령 출력에 나온 주소를 ego 브라우저에서 엽니다. Google 로그인과 편집기에서 함수 실행도 사용자가 부탁하면 AI 도구가 ego 브라우저로 합니다. 편집기에서 처음 실행해 "승인 필요" 창이 나오면 "권한 검토", 개인 계정, "고급", "텀블공장 개인 백엔드(으)로 이동", "모두 선택", "계속" 순서로 승인합니다. gas:login의 "확인하지 않은 앱" 경고도 clasp면 계속합니다. 사용자가 올린 코드라서 나오는 화면이니 묻지 않고 진행합니다. 실행 중 권한 오류가 나면 다시 실행해 "모두 선택"으로 승인합니다.
+`gas:create`, `gas:push`, `gas:deploy`, `gas:redeploy`는 AI 도구가 실행합니다. `gas:login`, `gas:editor`, `gas:open`은 브라우저로 볼 주소를 여는 명령입니다. 사용자가 부탁하면 AI 도구가 실행하고, 명령 출력에 나온 주소를 ego (lite) 브라우저에서 엽니다. `gas:editor`는 AI 도구의 터미널에서 실행하면 브라우저를 열지 않고 주소만 보여 줄 수 있습니다. 다른 브라우저가 열려도 ego (lite) 브라우저에서 엽니다. Google 로그인과 편집기에서 함수 실행도 사용자가 부탁하면 AI 도구가 ego (lite) 브라우저로 합니다. 편집기에서 처음 실행해 "승인 필요" 창이 나오면 "권한 검토", 개인 계정, "고급", "텀블공장 개인 백엔드(으)로 이동", "모두 선택", "계속" 순서로 승인합니다. gas:login의 "확인하지 않은 앱" 경고도 clasp면 계속합니다. 사용자가 올린 코드라서 나오는 화면이니 묻지 않고 진행합니다. 실행 중 권한 오류가 나면 다시 실행해 "모두 선택"으로 승인합니다.
 
-`gas:login`은 브라우저에서 허용을 마칠 때까지 끝나지 않습니다. AI 도구가 실행할 때는 AI 도구의 터미널이 기다리지 않도록 아래 명령으로 띄웁니다. 몇 초 뒤 둘째 줄로 출력을 보고, 주소가 있으면 그 주소를 ego 브라우저에서 열어 허용합니다. 주소가 없으면 몇 초 더 기다려 둘째 줄을 다시 봅니다. 그래도 없고 다른 브라우저에 로그인 화면이 열렸으면, 그 화면에서 바로 허용해도 되고 주소 창의 주소를 알려 주면 AI 도구가 ego 브라우저에서 열어 허용한다고 사용자에게 알립니다.
-
-```powershell
-Start-Process npm.cmd -ArgumentList 'run','gas:login' -WorkingDirectory 'C:\ai-class\tumble-dashboard' -WindowStyle Hidden -RedirectStandardOutput "$env:TEMP\clasp-login.txt"
-Get-Content "$env:TEMP\clasp-login.txt"
-```
+`gas:login`은 브라우저에서 허용을 마칠 때까지 끝나지 않습니다. AI 도구가 실행할 때는 1회차 문서 "오래 걸리는 명령"의 "새 창에서 실행하기"대로 웹 서비스 폴더에서 `<명령>` 자리에 `npm.cmd run gas:login`을 넣어 새 창에서 띄웁니다. 처음 실행할 때는 clasp를 내려받느라 출력 파일이 한동안 비어 있을 수 있습니다. 그다음 "끝났는지 보기"대로 출력 파일의 끝을 보고, 로그인 주소가 나오면 그 주소를 ego (lite) 브라우저에서 열어 허용합니다. 사용자가 알려 주지 않은 비밀번호나 본인 확인이 나오면 "사용자에게 넘기는 일"대로 합니다. 마지막 줄이 `AI-CMD-END:0`이면 로그인이 끝난 것입니다. "끝났는지 보기"를 두 번 해도 주소가 나오지 않았는데 다른 브라우저에 로그인 화면이 열렸으면, 그 화면에서 바로 허용해도 되고 주소 창의 주소를 알려 주면 AI 도구가 ego (lite) 브라우저에서 열어 허용한다고 사용자에게 알립니다.
 
 ### 약속
 
@@ -509,7 +504,13 @@ Get-Content "$env:TEMP\clasp-login.txt"
 - 사용자가 프로젝트를 새로 만들어 달라고 하면(다른 Google 계정으로 처음부터 할 때 등) gas:login을 다시 하고 `.clasp.json`을 지운 뒤 gas:create와 gas:push를 합니다. 새 웹 앱 주소가 필요하면 `public/config.js`의 `apiBaseUrl`을 "http://127.0.0.1:3000"으로 되돌린 뒤 gas:deploy를 하고, 주소가 바뀐다고 한 줄 알립니다.
 - GAS (Google 쪽 코드)를 고치면 `gas:push` 뒤 `gas:redeploy`를 합니다. 웹 앱은 배포한 때의 코드로 답하므로 올리기만 해서는 바뀌지 않습니다. 주소는 그대로입니다.
 - `gas:redeploy`나 `gas:open`이 "웹 앱 주소가 없습니다"로 실패하면 `npx.cmd --yes @google/clasp@3.4.1 list-deployments`로 설명이 dashboard인 배포를 찾습니다. 그 배포 ID로 https://script.google.com/macros/s/(배포 ID)/exec 주소를 만들어 `apiBaseUrl`에, `timeoutMs`에 `15000`을 넣고 다시 실행합니다. 그런 배포가 없을 때만 gas:deploy를 합니다.
-- 명령이 "User has not enabled the Apps Script API"나 `invalid_grant`로 실패하면 저절로 다시 실행하지 않고 오류 줄을 알립니다. Apps Script API 켜기(5-2)나 Google 로그인(5-6)을 다시 해야 합니다. 사용자가 부탁하면 AI 도구가 ego 브라우저로 그 일을 하고 명령을 다시 실행합니다.
+- 명령이 "User has not enabled the Apps Script API"나 `invalid_grant`로 실패하면 저절로 다시 실행하지 않고 오류 줄을 알립니다. Apps Script API 켜기(5-2)나 Google 로그인(5-6)을 다시 해야 합니다. 사용자가 부탁하면 AI 도구가 ego (lite) 브라우저로 그 일을 하고 명령을 다시 실행합니다.
+- 네 명령이 시간 초과 오류만 남기고 끊겼으면 실패가 아니라 어디까지 됐는지 모르는 상태입니다. clasp가 끝나야 결과 줄을 찍으므로 출력이 없어도 Google 쪽 일은 끝났을 수 있습니다. 다시 실행하기 전에 결과가 이미 생겼는지 봅니다.
+  - `gas:create`: `.clasp.json`이 있고 그 안의 `scriptId`가 비어 있지 않으면 프로젝트는 만들어진 것입니다. `rootDir`이 "gas"가 아니면 "프로젝트 만들기 명령"대로 `rootDir`만 "gas"로 고치고 다시 만들지 않습니다.
+  - `gas:deploy`: `public/config.js`의 `apiBaseUrl`이 /exec로 끝나면 배포된 것입니다. 아직 내 서버 주소면 `npx.cmd --yes @google/clasp@3.4.1 list-deployments`로 설명이 dashboard인 배포가 있는지 보고, 있으면 위 "웹 앱 주소가 없습니다" 줄처럼 그 배포 ID로 주소를 넣습니다. 없을 때만 다시 실행합니다.
+  - `gas:push`와 `gas:redeploy`: 다시 실행해도 배포가 늘지 않으므로 그대로 다시 실행합니다.
+  - 다시 실행할 때는 1회차 문서 "오래 걸리는 명령"의 "새 창에서 실행하기"로 합니다.
+- clasp를 처음 내려받던 명령이 끊긴 뒤 gas 명령마다 clasp를 실행하지 못하는 오류(모듈이나 파일을 찾지 못한다는 오류 등)가 나오면, 반쯤 받은 clasp가 남은 것일 수 있습니다. 먼저 `$env:LOCALAPPDATA`를 실행해 폴더 전체 경로를 얻고, 그 아래 `npm-cache\_npx` 폴더를 1회차 문서 "오래 걸리는 명령"의 "새 창에서 실행하기"로 지웁니다. `<명령>` 자리는 `Remove-Item ''(그 전체 경로)\npm-cache\_npx'' -Recurse -Force`입니다. 지우는 데도 30초를 넘길 수 있기 때문입니다. 그다음 `gas:login`처럼 새 창에서 그 명령을 다시 실행해 clasp를 다시 받습니다.
 - 결과는 프롬프트가 말한 줄을 알립니다.
 
 [session-5 문서 끝]
