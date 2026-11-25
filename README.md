@@ -1,5 +1,13 @@
 # 텀블공장 운영 대시보드 (수업용 저장소)
 
+## 간소화한 따라하기
+
+빈 폴더에서 AI와 함께 만들며 1회차부터 같은 폴더를 사용합니다. 회차별 프롬프트와 수업 자료로 진행합니다. 화면은 기존 완성 예제와 다를 수 있습니다.
+
+[1회차](follow-along/session-1.md) · [2회차](follow-along/session-2.md) · [3회차](follow-along/session-3.md) · [4회차](follow-along/session-4.md) · [5회차](follow-along/session-5.md) · [6회차](follow-along/session-6.md)
+
+아래는 이 저장소의 기존 완성 예제에 관한 안내입니다.
+
 텀블공장 운영 대시보드 수업(6회차)에서 쓰는 저장소입니다. 회차마다 그 회차까지 끝낸 결과물을 브랜치로 나눠 두었습니다. 따라하기는 `main` 브랜치 [1회차 문서](follow-along/session-1.md)의 "시작 전에"부터 시작합니다. 회차 문서는 GitHub 화면의 `main` 브랜치에서 엽니다.
 
 | 브랜치 | 회차 | 따라하기 범위 | 완료 기준 |
