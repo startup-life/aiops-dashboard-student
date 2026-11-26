@@ -17,11 +17,12 @@
 ### 따라하기
 
 ```text
+웹사이트는 내가 보내는 프롬프트에 따라 만들어줘. 다른 저장소의 제작 가이드나 완성 코드는 읽지 말아줘.
 이 폴더에서 웹 서비스를 만들 수 있게 Node.js와 Git이 있는지 확인해줘. 없으면 설치 방법을 알려줘. 설치나 로그인 중 내가 직접 해야 하는 일은 알려줘.
 ```
 
 ```text
-https://github.com/startup-life/aiops-dashboard-student 에서 API_CONTRACT.md와 public/assets 폴더를 가져와줘. 수업용 자료만 사용하고 다른 문서는 가져오지 마.
+https://github.com/startup-life/aiops-dashboard-student 에서 API_CONTRACT.md와 public/assets의 tumble-factory-logo.png, approved/factory.png, approved/warehouse.png만 같은 경로로 가져와줘. 강사 API 명세와 수업용 사진이야.
 ```
 
 ```text
